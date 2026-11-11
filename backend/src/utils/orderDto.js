@@ -1,0 +1,32 @@
+// The shape of an order sent to the customer's browser. Internal and payment details stay on the server.
+export const toOrderDto = (order) => ({
+  id: order._id,
+  orderNumber: order.orderNumber,
+  status: order.status,
+  items: order.items.map((item) => ({
+    productId: item.product,
+    name: item.name,
+    slug: item.slug,
+    image: item.image,
+    unitPrice: item.unitPrice,
+    quantity: item.quantity,
+    lineTotal: item.lineTotal,
+  })),
+  shippingAddress: {
+    fullName: order.shippingAddress.fullName,
+    phone: order.shippingAddress.phone,
+    street: order.shippingAddress.street,
+    city: order.shippingAddress.city,
+    state: order.shippingAddress.state,
+    landmark: order.shippingAddress.landmark,
+  },
+  notes: order.notes,
+  subtotal: order.subtotal,
+  deliveryFee: order.deliveryFee,
+  total: order.total,
+  expiresAt: order.status === 'pending_payment' ? order.expiresAt : null,
+  paidAt: order.paidAt ?? null,
+  cancelledAt: order.cancelledAt ?? null,
+  cancelReason: order.cancelReason,
+  createdAt: order.createdAt,
+});
